@@ -1,5 +1,7 @@
 # Thin Airfoil DVM Solver
 ![Travis (.com)](https://img.shields.io/travis/com/themrdjj/thin-airfoil-dvm?style=for-the-badge)
+![Codecov](https://img.shields.io/codecov/c/github/themrdjj/thin-airfoil-dvm?style=for-the-badge)
+![Codacy grade](https://img.shields.io/codacy/grade/d64cbaef18a9441a84d1616c07354b81?style=for-the-badge)
 ![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/themrdjj/thin-airfoil-dvm?style=for-the-badge)
 
 This python program computes the flow around a thin, cambered airfoil using the discrete vortex method. Next to the 
