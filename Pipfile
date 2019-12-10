@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 numpy = "*"
 pytest = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.8"

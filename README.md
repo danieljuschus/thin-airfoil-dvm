@@ -1,4 +1,7 @@
 # Thin Airfoil DVM Solver
+![Travis (.com)](https://img.shields.io/travis/com/themrdjj/thin-airfoil-dvm?style=for-the-badge)
+![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/themrdjj/thin-airfoil-dvm?style=for-the-badge)
+
 This python program computes the flow around a thin, cambered airfoil using the discrete vortex method. Next to the 
 velocity distribution it can also compute the pressure distribution and lift coefficient.
 
