@@ -1,4 +1,4 @@
-import numpy as np
+import math as m
 
 
 def vort(circ, xi, zi, x, z):
@@ -16,9 +16,9 @@ def vort(circ, xi, zi, x, z):
     :rtype: float
     """
 
-    rx = x-xi
-    rz = z-zi
-    r = np.sqrt(rx**2+rz**2)
-    u = circ/(2*np.pi*r**2)*rz
-    w = -circ/(2*np.pi*r**2)*rz
+    rx = x-xi  # X-distance from vortex to point
+    rz = z-zi  # Z-distance from vortex to point
+    r = m.sqrt(rx**2+rz**2)  # Distance from vortex to point
+    u = circ/(2*m.pi*r**2)*rz  # Induced velocity in x-direction
+    w = -circ/(2*m.pi*r**2)*rz  # Induced velocity in z-direction
     return u, w

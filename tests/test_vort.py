@@ -1,5 +1,4 @@
 from thin_airfoil_dvm.vort import vort
-import numpy
 import pytest
 
 
@@ -9,9 +8,14 @@ def input_simple_float():
 
 
 class TestVort:
-    def test_return_type_tuple(self, input_simple_float):
+    def test_return_type(self, input_simple_float):
+        """Test return type"""
         assert type(vort(*input_simple_float)) is tuple
 
     def test_return_type_uw(self, input_simple_float):
-        assert type(vort(*input_simple_float)[0]) is numpy.float64 \
-               and type(vort(*input_simple_float)[1]) is numpy.float64
+        """Test type of each velocity"""
+        assert all(isinstance(n, float) for n in vort(*input_simple_float))
+
+    def test_value(self, input_simple_float):
+        """Test value of each velocity"""
+        assert vort(*input_simple_float) == (0.07957747154594765, -0.07957747154594765)
