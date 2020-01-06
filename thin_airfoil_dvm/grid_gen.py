@@ -9,12 +9,19 @@ def grid_gen(airfoilname, n_panels):
     normal vectors.
 
     Airfoil must be specified as dat/txt file in the Lednicer format. This file must be placed in "data/airfoils/".
+
     TODO: Implement Selig format, implement case insensitivity in file name
+    TODO: Implement airfoil-utils instead of/next to text file imports? (for instance: if file name not found, import
+     from online database)
 
     :param string airfoilname: Name of airfoil (case-sensitive, without file extension)
     :param int n_panels: Number of panels to be placed on camber line
-    :return: List of tuples with unit normal vectors in (x,z)-directions
-    :rtype: list
+    :return x_vort: List of x-coordinates of vortex points
+    :return y_vort: List of y-coordinates of vortex points
+    :return x_col: List of x-coordinates of collocation points
+    :return z_col: List of z-coorindates of collocations points
+    :return norm_vec: List of tuples with unit normal vectors in (x,z)-directions
+    :rtype: tuple
     """
 
     # Import airfoil coordinates as x,z lists
@@ -37,9 +44,17 @@ def grid_gen(airfoilname, n_panels):
     x_camber = x_up  # Camber line will be evaluated at upper x-coordinates
     z_camber = [z_lo_interp[i]+(z_up[i]-z_lo_interp[i])*0.5 for i in range(len(x_camber))]  # Compute camber z-coords.
 
+    # Compute vortex points of N panels as x,z lists
+    # TODO: aren't we technically neglecting the camber here (this is how it's done in the book)? right now, the
+    #  vortex/collocation point x-coordinates are just placed along the x-axis (x+0.25/n_panels) but actually they
+    #  should be placed 25/75 percent along each panel, which itself has an angle to the horizontal.
+    x_vort = [x + 0.25/n_panels for x in np.linspace(0, 1, n_panels+1)[:-1]]  # Determine x-coordinates of coll. pts.
+    # TODO: the book computes the z-coordinates on the actual camber line. shouldn't they be computed on the panels?
+    z_vort = np.interp(x_vort, x_camber, z_camber).tolist()  # Compute vortex point z-coordinates
+
     # Compute collocation points of N panels as x,z lists
     x_col = [x + 0.75/n_panels for x in np.linspace(0, 1, n_panels+1)[:-1]]  # Determine x-coordinates of coll. pts.
-    z_col = np.interp(x_col, x_camber, z_camber)  # Compute collocation point z-coordinates
+    z_col = np.interp(x_col, x_camber, z_camber).tolist()  # Compute collocation point z-coordinates
 
     # Compute normal unit vectors at collocation points as list of tuples (x,z) using "real" camber line. Note that
     # linear interpolation is used between the camber line points, so this is not truly analytical.
@@ -49,7 +64,7 @@ def grid_gen(airfoilname, n_panels):
     idx = [np.argwhere(x_camber > x_col_i)[0, 0] for x_col_i in x_col]  # find indices of coll. pts. in camber x list
     alphas = [np.tan((z_camber[i]-z_camber[i-1])/(x_camber[i]-x_camber[i-1])) for i in idx]  # Compute alpha
     norm_vec = [(-np.sin(alpha_i), np.cos(alpha_i)) for alpha_i in alphas]
-    return norm_vec
+    return x_vort, z_vort, x_col, z_col, norm_vec
 
 
 if __name__ == "__main__":

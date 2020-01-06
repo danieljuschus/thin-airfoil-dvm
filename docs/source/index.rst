@@ -16,6 +16,9 @@ Modules
 .. automodule:: thin_airfoil_dvm.vort
    :members:
 
+.. automodule:: thin_airfoil_dvm.grid_gen
+   :members:
+
 Indices and tables
 ==================
 
