@@ -20,5 +20,5 @@ def vort(circ, xi, zi, x, z):
     rz = z-zi  # Z-distance from vortex to point
     r = m.sqrt(rx**2+rz**2)  # Distance from vortex to point
     u = circ/(2*m.pi*r**2)*rz  # Induced velocity in x-direction
-    w = -circ/(2*m.pi*r**2)*rz  # Induced velocity in z-direction
+    w = -circ/(2*m.pi*r**2)*rx  # Induced velocity in z-direction
     return u, w
