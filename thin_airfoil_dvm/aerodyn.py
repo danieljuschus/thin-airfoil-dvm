@@ -9,7 +9,6 @@ def aerodyn(vort_distr, q_inf, rho, n_panels):
     lift = sum(l_distr)
     lift_coeff = lift / (0.5*rho*q_inf**2)
     cp_distr = p_distr / (0.5*rho*q_inf**2)
-
     return p_distr, lift, lift_coeff, cp_distr
 
 # if __name__ == "__main__":

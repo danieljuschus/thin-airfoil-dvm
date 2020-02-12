@@ -21,8 +21,11 @@ def thin_airfoil_dvm(airfoilname, alpha, q_inf, n_panels, rho):
     :rtype: tuple
     """
     x_vort, z_vort, x_col, z_col, norm_vec = grid_gen(airfoilname, n_panels)
+    # plt.plot(x_vort, z_vort)
+    # plt.axis("equal")
+    # plt.show()
     inf_mat = inf_coeff(n_panels, x_vort, z_vort, x_col, z_col, norm_vec)
-    rhs = [-q_inf*(np.cos(alpha)*norm_i[0] + np.sin(alpha)*norm_i[1]) for norm_i in norm_vec]
+    rhs = [-q_inf*(np.cos(np.deg2rad(alpha))*norm_i[0] + np.sin(np.deg2rad(alpha))*norm_i[1]) for norm_i in norm_vec]
     vort_dist = np.linalg.inv(inf_mat).dot(rhs)
     p_distr, lift, lift_coeff, cp_distr = aerodyn(vort_dist, q_inf, rho, n_panels)
     return cp_distr
@@ -30,9 +33,16 @@ def thin_airfoil_dvm(airfoilname, alpha, q_inf, n_panels, rho):
 
 if __name__ == "__main__":
     q_inf = 5.
-    alpha = 10.
     n_panels = 50
     rho = 1.225
+    alpha = 2
     res = thin_airfoil_dvm("e553", alpha, q_inf, n_panels, rho)
     plt.plot(np.linspace(0, 1, n_panels), res)
+    plt.xlabel("chord fraction")
+    plt.ylabel("cp")
+    # alphas = range(10)
+    # cls = [thin_airfoil_dvm("e553", alpha, q_inf, n_panels, rho) for alpha in alphas]
+    # plt.plot(alphas, cls)
+    # plt.xlabel("alpha in deg")
+    # plt.ylabel("lift coefficient")
     plt.show()
