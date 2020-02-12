@@ -28,7 +28,7 @@ def thin_airfoil_dvm(airfoilname, alpha, q_inf, n_panels, rho):
     rhs = [-q_inf*(np.cos(np.deg2rad(alpha))*norm_i[0] + np.sin(np.deg2rad(alpha))*norm_i[1]) for norm_i in norm_vec]
     vort_dist = np.linalg.inv(inf_mat).dot(rhs)
     p_distr, lift, lift_coeff, cp_distr = aerodyn(vort_dist, q_inf, rho, n_panels)
-    return cp_distr
+    return cp_distr, lift_coeff
 
 
 if __name__ == "__main__":
