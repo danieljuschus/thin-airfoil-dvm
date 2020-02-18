@@ -67,10 +67,10 @@ def grid_gen(airfoilname, n_panels):
     norm_vec = [(-np.sin(alpha_i), np.cos(alpha_i)) for alpha_i in alphas]
 
     # Debug plotting
-    plt.plot(x_col, z_col)
-    plt.axis("equal")
-    plt.title("Grid gen internal debug")
-    plt.show()
+    # plt.plot(x_col, z_col)
+    # plt.axis("equal")
+    # plt.title("Grid gen internal debug")
+    # plt.show()
     return x_vort, z_vort, x_col, z_col, norm_vec
 
 

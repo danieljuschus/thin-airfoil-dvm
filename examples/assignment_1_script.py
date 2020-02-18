@@ -1,24 +1,30 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from thin_airfoil_dvm.thin_airfoil_dvm_main import thin_airfoil_dvm
+from scipy.interpolate import UnivariateSpline, interp1d
 
 # =================================================================================================
 # 2. Validation using results from literature
 # =================================================================================================
 airfoilname = "naca0006"
-alpha = np.deg2rad(5.1)
-q_inf = 45.1104  # original: 162 fps
+alpha = 15
+q_inf = 5  # original: 162 fps
 n_panels = 1000
-rho = 0.8
+rho = 1.225
 
 cp_calc = thin_airfoil_dvm(airfoilname, alpha, q_inf, n_panels, rho)[0]
-cp_exp = np.genfromtxt("../data/wind_tunnel_data/naca0006alpha0.csv", delimiter=",")
+cp_exp = np.genfromtxt("../data/wind_tunnel_data/naca4408alpha15.csv", delimiter=",")
 
+
+spl_up = interp1d(cp_exp[8:22, 0], cp_exp[8:22, 1], fill_value="extrapolate")
+spl_lo = interp1d(np.hstack((cp_exp[22:, 0], cp_exp[:4, 0], cp_exp[8, 0])),
+                  np.hstack((cp_exp[22:, 1], cp_exp[:4, 1], cp_exp[8, 1])), fill_value="extrapolate")
+x_spl = np.linspace(0.002, 1, 100)
+cp_exp_dif = spl_lo(x_spl) - spl_up(x_spl)
 plt.plot(np.linspace(0, 1, n_panels, endpoint=False)+1/(n_panels*4.), cp_calc, label="Calculated data")
-plt.plot(cp_exp[:, 0]/100., cp_exp[:, 1], label="Wind tunnel data")
-plt.gca().invert_yaxis()
+plt.plot(x_spl, cp_exp_dif, "kx", label="Wind tunnel data")
 plt.xlabel("Fraction of chord")
-plt.ylabel("Pressure coefficient")
+plt.ylabel(r"$\Delta c_p$")
 plt.grid(True)
 plt.legend()
 plt.show()

@@ -36,9 +36,9 @@ if __name__ == "__main__":
     q_inf = 5.
     n_panels = 50
     rho = 1.225
-    alpha = 2
+    alpha = 15
     # res = thin_airfoil_dvm("e553", alpha, q_inf, n_panels, rho)
-    res = thin_airfoil_dvm("flat_plate", alpha, q_inf, n_panels, rho)
+    res = thin_airfoil_dvm("naca0006", alpha, q_inf, n_panels, rho)
     plt.plot(np.linspace(0, 1, n_panels), res[0])
     plt.xlabel("chord fraction")
     plt.ylabel("cp")
