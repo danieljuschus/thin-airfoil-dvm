@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import glob
+import matplotlib.pyplot as plt
 
 
 def grid_gen(airfoilname, n_panels):
@@ -64,6 +65,12 @@ def grid_gen(airfoilname, n_panels):
     idx = [np.argwhere(x_camber > x_col_i)[0, 0] for x_col_i in x_col]  # find indices of coll. pts. in camber x list
     alphas = [np.tan((z_camber[i]-z_camber[i-1])/(x_camber[i]-x_camber[i-1])) for i in idx]  # Compute alpha
     norm_vec = [(-np.sin(alpha_i), np.cos(alpha_i)) for alpha_i in alphas]
+
+    # Debug plotting
+    plt.plot(x_col, z_col)
+    plt.axis("equal")
+    plt.title("Grid gen internal debug")
+    plt.show()
     return x_vort, z_vort, x_col, z_col, norm_vec
 
 
