@@ -1,8 +1,29 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from thin_airfoil_dvm_main import thin_airfoil_dvm
+from thin_airfoil_dvm.thin_airfoil_dvm_main import thin_airfoil_dvm
 
+# =================================================================================================
+# 2. Validation using results from literature
+# =================================================================================================
+airfoilname = "naca0006"
+alpha = np.deg2rad(5.1)
+q_inf = 45.1104  # original: 162 fps
+n_panels = 1000
+rho = 0.8
 
+cp_calc = thin_airfoil_dvm(airfoilname, alpha, q_inf, n_panels, rho)[0]
+cp_exp = np.genfromtxt("../data/wind_tunnel_data/naca0006alpha0.csv", delimiter=",")
+
+plt.plot(np.linspace(0, 1, n_panels, endpoint=False)+1/(n_panels*4.), cp_calc, label="Calculated data")
+plt.plot(cp_exp[:, 0]/100., cp_exp[:, 1], label="Wind tunnel data")
+plt.gca().invert_yaxis()
+plt.xlabel("Fraction of chord")
+plt.ylabel("Pressure coefficient")
+plt.grid(True)
+plt.legend()
+plt.show()
+
+"""
 # =================================================================================================
 # 3. Comparison Cambered airfoil (e553) with Symmetrical airfoil (flat plate)
 # =================================================================================================
@@ -114,3 +135,4 @@ plt.plot(np.linspace(0, 1, n_high), cp_high, 'x', label='N_panels ={}'.format(n_
 plt.xlabel(r'$ \frac{x}{c}$')
 plt.ylabel(r'$\Delta C_p$')
 plt.legend()
+"""

@@ -23,6 +23,7 @@ def thin_airfoil_dvm(airfoilname, alpha, q_inf, n_panels, rho):
     x_vort, z_vort, x_col, z_col, norm_vec = grid_gen(airfoilname, n_panels)
     # plt.plot(x_vort, z_vort)
     # plt.axis("equal")
+    # plt.title("Grid generation debug plotting")
     # plt.show()
     inf_mat = inf_coeff(n_panels, x_vort, z_vort, x_col, z_col, norm_vec)
     rhs = [-q_inf*(np.cos(np.deg2rad(alpha))*norm_i[0] + np.sin(np.deg2rad(alpha))*norm_i[1]) for norm_i in norm_vec]
@@ -36,8 +37,9 @@ if __name__ == "__main__":
     n_panels = 50
     rho = 1.225
     alpha = 2
-    res = thin_airfoil_dvm("e553", alpha, q_inf, n_panels, rho)
-    plt.plot(np.linspace(0, 1, n_panels), res)
+    # res = thin_airfoil_dvm("e553", alpha, q_inf, n_panels, rho)
+    res = thin_airfoil_dvm("flat_plate", alpha, q_inf, n_panels, rho)
+    plt.plot(np.linspace(0, 1, n_panels), res[0])
     plt.xlabel("chord fraction")
     plt.ylabel("cp")
     # alphas = range(10)
