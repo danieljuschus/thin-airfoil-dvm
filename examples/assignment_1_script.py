@@ -23,7 +23,7 @@ plt.grid(True)
 plt.legend()
 plt.show()
 
-"""
+
 # =================================================================================================
 # 3. Comparison Cambered airfoil (e553) with Symmetrical airfoil (flat plate)
 # =================================================================================================
@@ -135,4 +135,3 @@ plt.plot(np.linspace(0, 1, n_high), cp_high, 'x', label='N_panels ={}'.format(n_
 plt.xlabel(r'$ \frac{x}{c}$')
 plt.ylabel(r'$\Delta C_p$')
 plt.legend()
-"""
