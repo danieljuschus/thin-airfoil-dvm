@@ -18,4 +18,4 @@ for i in xrange(len(x_up)):
 for j in xrange(len(x_lo)):
     new_data.append([x_lo[j], z_lo[j]])
 
-np.savetxt("NACA4408.dat", new_data)
+np.savetxt("naca4408.dat", new_data)
