@@ -1,26 +1,21 @@
 import numpy as np
 import os
 import glob
-import matplotlib.pyplot as plt
 
 
 def grid_gen(airfoilname, n_panels):
     """
-    Import airfoil coordinates from text file, create panels on camber line and compute
+    Imports airfoil coordinates from text file, creates panels on camber line and computes
     normal vectors.
 
     Airfoil must be specified as dat/txt file in the Lednicer format. This file must be placed in "data/airfoils/".
-
-    TODO: Implement Selig format, implement case insensitivity in file name
-    TODO: Implement airfoil-utils instead of/next to text file imports? (for instance: if file name not found, import
-     from online database)
 
     :param string airfoilname: Name of airfoil (case-sensitive, without file extension)
     :param int n_panels: Number of panels to be placed on camber line
     :return x_vort: List of x-coordinates of vortex points
     :return y_vort: List of y-coordinates of vortex points
     :return x_col: List of x-coordinates of collocation points
-    :return z_col: List of z-coorindates of collocations points
+    :return z_col: List of z-coordinates of collocations points
     :return norm_vec: List of tuples with unit normal vectors in (x,z)-directions
     :rtype: tuple
     """
@@ -31,7 +26,6 @@ def grid_gen(airfoilname, n_panels):
         path_pytest = glob.glob(os.path.join(os.getcwd(), "data/airfoils/" + airfoilname + "*"))  # Needed for pytest
         if len(path_pytest):
             # In the current setup, pytest runs in the parent folder, so the path needs to be modified as shown
-            # TODO: improve this - it's not pretty
             path = path_pytest
         else:
             raise NameError("Airfoil data file not found.")
@@ -59,6 +53,7 @@ def grid_gen(airfoilname, n_panels):
 
     # Compute normal unit vectors at collocation points as list of tuples (x,z) using "real" camber line. Note that
     # linear interpolation is used between the camber line points, so this is not truly analytical.
+    # TODO: check this
     # Other option: using the camber line panels defined by n_panels:
     # alphas = [np.tan((z_col[i+1]-z_col[i])/(x_col[i+1]-x_col[i])) for i in range(n_panels)]
     # norm_vec = [(np.sin(alpha_i), np.cos(alpha_i)) for alpha_i in alphas]
@@ -66,13 +61,4 @@ def grid_gen(airfoilname, n_panels):
     alphas = [np.tan((z_camber[i]-z_camber[i-1])/(x_camber[i]-x_camber[i-1])) for i in idx]  # Compute alpha
     norm_vec = [(-np.sin(alpha_i), np.cos(alpha_i)) for alpha_i in alphas]
 
-    # Debug plotting
-    # plt.plot(x_col, z_col)
-    # plt.axis("equal")
-    # plt.title("Grid gen internal debug")
-    # plt.show()
     return x_vort, z_vort, x_col, z_col, norm_vec
-
-
-if __name__ == "__main__":
-    res = grid_gen("e553", 10)

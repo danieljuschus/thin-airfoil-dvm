@@ -4,7 +4,6 @@ import math as m
 def vort(circ, xi, zi, x, z):
     """
     Computes velocity induced by vortex with strength circ at any given point (x,z). The vortex is located at (xi,zi).
-    See Katz & Plotkin.
 
     :param float circ: Circulation strength of vortex in ?
     :param float xi: X-position of vortex in m
@@ -13,9 +12,8 @@ def vort(circ, xi, zi, x, z):
     :param float z: Z-position in m at which induced velocities should be evaluated
     :return u: Induced velocity in x-direction in m/s
     :return w: Induced velocity in z-direction in m/s
-    :rtype: float
+    :rtype: tuple
     """
-
     rx = x-xi  # X-distance from vortex to point
     rz = z-zi  # Z-distance from vortex to point
     r = m.sqrt(rx**2+rz**2)  # Distance from vortex to point

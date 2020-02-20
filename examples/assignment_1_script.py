@@ -26,7 +26,7 @@ x_spl = np.linspace(0.002, 1, 100)
 cp_exp_dif = spl_lo(x_spl) - spl_up(x_spl)
 
 plt.plot(np.linspace(0, 1, n_panels, endpoint=False)+1/(n_panels*4.), cp_calc, label="Calculated values")
-plt.plot(x_spl, cp_exp_dif, "kx", label="Reference values")
+plt.plot(x_spl[1:], cp_exp_dif[1:], "kx", label="Reference values")
 plt.xlabel("Fraction of chord")
 plt.ylabel(r"$\Delta c_p$")
 plt.grid()
@@ -45,6 +45,9 @@ rho = 1.225
 
 cl_calc = [thin_airfoil_dvm(airfoilname, alpha, q_inf, n_panels, rho)[1] for alpha in alphas]
 cl_exp = np.genfromtxt("../data/reference_data/naca1408_lift_polar.csv", delimiter=",")
+
+slope = (cl_calc[-1] - cl_calc[0])/(alphas[-1] - alphas[0])*180/np.pi  # in 1/rad
+
 plt.plot(alphas, cl_calc, "k+", label="Calculated values")
 plt.plot(cl_exp[:, 0], cl_exp[:, 1], "kx", label="Reference values")
 plt.xlabel("Angle of attack in degrees")
