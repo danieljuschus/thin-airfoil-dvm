@@ -40,23 +40,18 @@ def grid_gen(airfoilname, n_panels):
     z_camber = [z_lo_interp[i]+(z_up[i]-z_lo_interp[i])*0.5 for i in range(len(x_camber))]  # Compute camber z-coords.
 
     # Compute vortex points of N panels as x,z lists
-    # TODO: aren't we technically neglecting the camber here (this is how it's done in the book)? right now, the
-    #  vortex/collocation point x-coordinates are just placed along the x-axis (x+0.25/n_panels) but actually they
-    #  should be placed 25/75 percent along each panel, which itself has an angle to the horizontal.
+    # - Small angle approximation: the points are placed 25% along the x-axis and not the actual panel. Z-coordinates
+    # - are computed from camber line and not directly on panels. see Katz & Plotkin.
     x_vort = [x + 0.25/n_panels for x in np.linspace(0, 1, n_panels+1)[:-1]]  # Determine x-coordinates of coll. pts.
-    # TODO: the book computes the z-coordinates on the actual camber line. shouldn't they be computed on the panels?
     z_vort = np.interp(x_vort, x_camber, z_camber).tolist()  # Compute vortex point z-coordinates
 
     # Compute collocation points of N panels as x,z lists
+    # - Again, small angle approx. as above
     x_col = [x + 0.75/n_panels for x in np.linspace(0, 1, n_panels+1)[:-1]]  # Determine x-coordinates of coll. pts.
     z_col = np.interp(x_col, x_camber, z_camber).tolist()  # Compute collocation point z-coordinates
 
-    # Compute normal unit vectors at collocation points as list of tuples (x,z) using "real" camber line. Note that
-    # linear interpolation is used between the camber line points, so this is not truly analytical.
-    # TODO: check this
-    # Other option: using the camber line panels defined by n_panels:
-    # alphas = [np.tan((z_col[i+1]-z_col[i])/(x_col[i+1]-x_col[i])) for i in range(n_panels)]
-    # norm_vec = [(np.sin(alpha_i), np.cos(alpha_i)) for alpha_i in alphas]
+    # Compute normal unit vectors at collocation points as list of tuples (x,z)
+    # - Again, small angle approximation: vectors are computed using camber line, not panels
     idx = [np.argwhere(x_camber > x_col_i)[0, 0] for x_col_i in x_col]  # find indices of coll. pts. in camber x list
     alphas = [np.tan((z_camber[i]-z_camber[i-1])/(x_camber[i]-x_camber[i-1])) for i in idx]  # Compute alpha
     norm_vec = [(-np.sin(alpha_i), np.cos(alpha_i)) for alpha_i in alphas]
